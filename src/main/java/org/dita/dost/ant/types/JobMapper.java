@@ -73,19 +73,19 @@ public class JobMapper implements FileNameMapper {
       switch (type) {
         case TEMP -> fi.file.getPath();
         case RESULT -> {
-          if (fi.result == null) {
-            yield sourceFileName;
-          } else {
-            Path base;
-            if (job.getGeneratecopyouter() == Job.Generate.NOT_GENERATEOUTTER) {
-              base = Paths.get(job.getInputDir().resolve(job.getInputMap())).getParent();
-            } else {
-              base = Paths.get(job.getInputDir());
-            }
+          if (fi.result == null) yield sourceFileName;
 
-            final Path rel = base.relativize(Paths.get(fi.result));
-            yield rel.toString();
+          Path base;
+          Path file = Paths.get(fi.result);
+          if (job.getGeneratecopyouter() == Job.Generate.NOT_GENERATEOUTTER) {
+            base = Paths.get(job.getInputDir().resolve(job.getInputMap())).getParent();
+            if (!file.startsWith(base)) yield null;
+          } else {
+            base = Paths.get(job.getInputDir());
           }
+
+          final Path rel = base.relativize(file);
+          yield rel.toString();
         }
       };
     return new String[] { extension != null ? (FilenameUtils.removeExtension(res) + extension) : res };

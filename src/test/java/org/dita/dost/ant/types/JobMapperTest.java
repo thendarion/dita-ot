@@ -19,9 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.apache.tools.ant.Project;
@@ -86,53 +84,10 @@ public class JobMapperTest {
     job.setInputDir(tempDir.toURI());
     job.setGeneratecopyouter(NOT_GENERATEOUTTER);
     String ditamap = "map.ditamap";
-    URI ditamapPath = tempDir.toURI().resolve(ditamap);
-    File ditamapFile = new File(tempDir, ditamap);
-    ditamapFile.createNewFile();
-    job.add(
-      new Job.FileInfo.Builder()
-        .uri(create(ditamap))
-        .isInput(true)
-        .src(ditamapPath)
-        .result(ditamapPath)
-        .format("ditamapPath")
-        .build()
-    );
-    job.add(
-      new Job.FileInfo.Builder()
-        .uri(create("topics/topic.dita"))
-        .result(create(tempDir.toURI() + "topics/topic.dita"))
-        .format("dita")
-        .build()
-    );
-    job.add(new Job.FileInfo.Builder().uri(create("topics/null.dita")).build());
-    job.add(
-      new Job.FileInfo.Builder()
-        .uri(create("topics/task.dita"))
-        .result(create(tempDir.toURI() + "topics/task.dita"))
-        .format("dita")
-        .build()
-    );
-    job.add(
-      new Job.FileInfo.Builder()
-        .uri(create("common/topic.dita"))
-        .result(create(tempDir.toURI() + "common/topic.dita"))
-        .format("dita")
-        .build()
-    );
-    job.add(
-      new Job.FileInfo.Builder()
-        .uri(create("images/image.gif"))
-        .result(create(tempDir.toURI() + "images/image.gif"))
-        .format("image")
-        .build()
-    );
+    addMap(ditamap);
+    addFiles();
 
-    final String[] act = jobSourceSet
-      .stream()
-      .map(elem -> fileNameMapper.mapFileName(elem.getName()))
-      .flatMap(Arrays::stream)
-      .toArray(String[]::new);
+    final String[] act = applyJobMapper();
     String[] exp = new String[] {
       "map.ditamap",
       "common" + File.separator + "topic.dita",
@@ -151,6 +106,39 @@ public class JobMapperTest {
     job.setInputDir(tempDir.toURI());
     job.setGeneratecopyouter(NOT_GENERATEOUTTER);
     String ditamap = "common/map.ditamap";
+    addMap(ditamap);
+    addFiles();
+
+    String[] act = applyJobMapper();
+    String[] exp = new String[] { "map.ditamap", "topic.dita", "topics/null.dita", null, null, null };
+    Arrays.sort(act, Comparator.nullsLast(Comparator.naturalOrder()));
+    Arrays.sort(exp, Comparator.nullsLast(Comparator.naturalOrder()));
+    assertArrayEquals(exp, act, "Mismatch");
+  }
+
+  @Test
+  public void testUplevels3() throws IOException {
+    job.setInputDir(tempDir.toURI());
+    job.setGeneratecopyouter(OLDSOLUTION);
+    String ditamap = "common/map.ditamap";
+    addMap(ditamap);
+    addFiles();
+
+    final String[] act = applyJobMapper();
+    String[] exp = new String[] {
+      "common" + File.separator + "map.ditamap",
+      "common" + File.separator + "topic.dita",
+      "topics" + File.separator + "task.dita",
+      "topics" + File.separator + "topic.dita",
+      "images" + File.separator + "image.gif",
+      "topics/null.dita",
+    };
+    Arrays.sort(act);
+    Arrays.sort(exp);
+    assertArrayEquals(exp, act, "Mismatch");
+  }
+
+  private static void addMap(String ditamap) throws IOException {
     URI ditamapPath = tempDir.toURI().resolve(ditamap);
     File ditamapFile = new File(tempDir, ditamap);
     ditamapFile.getParentFile().mkdirs();
@@ -164,37 +152,9 @@ public class JobMapperTest {
         .format("ditamap")
         .build()
     );
-    job.add(
-      new Job.FileInfo.Builder()
-        .uri(create("common/topic.dita"))
-        .result(create(tempDir.toURI() + "common/topic.dita"))
-        .format("dita")
-        .build()
-    );
-
-    final String[] act = jobSourceSet
-      .stream()
-      .map(elem -> fileNameMapper.mapFileName(elem.getName()))
-      .flatMap(Arrays::stream)
-      .toArray(String[]::new);
-    String[] exp = new String[] { "map.ditamap", "topic.dita" };
-    Arrays.sort(act);
-    Arrays.sort(exp);
-    assertArrayEquals(exp, act, "Mismatch");
   }
 
-  @Test
-  public void testUplevels3() {
-    job.setInputDir(tempDir.toURI());
-    job.setGeneratecopyouter(OLDSOLUTION);
-    job.add(
-      new Job.FileInfo.Builder()
-        .uri(create("common/map.ditamap"))
-        .isInput(true)
-        .result(create(tempDir.toURI() + "common/map.ditamap"))
-        .format("ditamap")
-        .build()
-    );
+  private static void addFiles() {
     job.add(
       new Job.FileInfo.Builder()
         .uri(create("topics/topic.dita"))
@@ -224,22 +184,13 @@ public class JobMapperTest {
         .format("image")
         .build()
     );
+  }
 
-    final String[] act = jobSourceSet
+  private String[] applyJobMapper() {
+    return jobSourceSet
       .stream()
       .map(elem -> fileNameMapper.mapFileName(elem.getName()))
       .flatMap(Arrays::stream)
       .toArray(String[]::new);
-    String[] exp = new String[] {
-      "common" + File.separator + "map.ditamap",
-      "common" + File.separator + "topic.dita",
-      "topics" + File.separator + "task.dita",
-      "topics" + File.separator + "topic.dita",
-      "images" + File.separator + "image.gif",
-      "topics/null.dita",
-    };
-    Arrays.sort(act);
-    Arrays.sort(exp);
-    assertArrayEquals(exp, act, "Mismatch");
   }
 }
