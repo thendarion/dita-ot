@@ -79,7 +79,6 @@ public class JobMapper implements FileNameMapper {
           Path file = Paths.get(fi.result);
           if (job.getGeneratecopyouter() == Job.Generate.NOT_GENERATEOUTTER) {
             base = Paths.get(job.getInputDir().resolve(job.getInputMap())).getParent();
-            if (!file.startsWith(base)) yield null;
           } else {
             base = Paths.get(job.getInputDir());
           }

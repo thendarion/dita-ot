@@ -110,9 +110,16 @@ public class JobMapperTest {
     addFiles();
 
     String[] act = applyJobMapper();
-    String[] exp = new String[] { "map.ditamap", "topic.dita", "topics/null.dita", null, null, null };
-    Arrays.sort(act, Comparator.nullsLast(Comparator.naturalOrder()));
-    Arrays.sort(exp, Comparator.nullsLast(Comparator.naturalOrder()));
+    String[] exp = new String[] {
+      "map.ditamap",
+      "topic.dita",
+      "topics/null.dita",
+      ".." + File.separator + "images" + File.separator + "image.gif",
+      ".." + File.separator + "topics" + File.separator + "task.dita",
+      ".." + File.separator + "topics" + File.separator + "topic.dita",
+    };
+    Arrays.sort(act);
+    Arrays.sort(exp);
     assertArrayEquals(exp, act, "Mismatch");
   }
 
