@@ -10,7 +10,6 @@ package org.dita.dost.util;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import java.util.Locale;
-
 import org.junit.jupiter.api.Test;
 
 public class DITAOTCollatorTest {
