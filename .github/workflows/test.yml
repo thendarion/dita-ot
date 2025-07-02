@@ -38,8 +38,10 @@ jobs:
       - name: Stop Gradle Daemon
         if: always()
         run: ./gradlew --stop
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: (!cancelled())
+      - name: Publish Test Reports
+        uses: dorny/test-reporter@v2
+        if: always()
         with:
-          files: build/test-results/**/*.xml
+          name: Tests
+          path: build/test-results/**/*.xml
+          reporter: java-junit
