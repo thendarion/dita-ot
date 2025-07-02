@@ -38,12 +38,8 @@ jobs:
       - name: Stop Gradle Daemon
         if: always()
         run: ./gradlew --stop
-      - name: Publish Test Reports
-        uses: dorny/test-reporter@v2
+      - name: Report build results
+        uses: gmazzo/publish-report-annotations@v1 # target latest major
         if: ${{ !cancelled() }}
         with:
-          name: Tests
-          path: build/test-results/**/*.xml
-          reporter: java-junit
-          list-tests: 'failed'
-          list-suites: 'failed'
+          reports: build/test-results/**/*.xml
