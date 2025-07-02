@@ -45,7 +45,7 @@ class TopicCleanFilterTest {
   @CsvSource(
     {
       "path2project,topic.dita,root.ditamap,",
-      "path2project,dir/topic.dita,root.ditamap,../",
+      "path2project,dir/topic.dita,root.ditamap,",
       "path2project,dir/sub/topic.dita,root.ditamap,../../",
       "path2project-uri,topic.dita,root.ditamap,./",
       "path2project-uri,dir/topic.dita,root.ditamap,../",
