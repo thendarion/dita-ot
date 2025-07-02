@@ -40,8 +40,10 @@ jobs:
         run: ./gradlew --stop
       - name: Publish Test Reports
         uses: dorny/test-reporter@v2
-        if: always()
+        if: ${{ !cancelled() }}
         with:
           name: Tests
           path: build/test-results/**/*.xml
           reporter: java-junit
+          list-tests: 'failed'
+          list-suites: 'failed'
