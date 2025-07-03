@@ -7,9 +7,6 @@ target/
 # Node dependenciess
 node_modules
 
-# IntelliJ IDEA
-.idea/
-
 # JAR files retrieved during the build process
 src/main/lib/*.jar
 

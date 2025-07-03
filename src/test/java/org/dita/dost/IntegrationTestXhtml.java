@@ -366,6 +366,8 @@ public class IntegrationTestXhtml extends AbstractIntegrationTest {
       .input(Paths.get("maps/above.ditamap"))
       .put("generate.copy.outer", "1")
       .put("outer.control", "quiet")
+      .warnCount(1)
+      .errorCount(1)
       .test();
   }
 

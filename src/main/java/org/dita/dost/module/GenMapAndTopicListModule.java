@@ -20,7 +20,6 @@ import com.google.common.collect.MultimapBuilder.SetMultimapBuilder;
 import com.google.common.collect.SetMultimap;
 import java.io.*;
 import java.net.URI;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -884,6 +883,14 @@ public final class GenMapAndTopicListModule extends SourceReaderModule {
 
     final Map<URI, URI> filteredCopyTo = filterConflictingCopyTo(copyTo, fileinfos.values());
 
+    if (job.getGeneratecopyouter() == Job.Generate.NOT_GENERATEOUTTER) {
+      for (final FileInfo fs : fileinfos.values()) {
+        if (!Paths.get(fs.src).startsWith(Paths.get(rootFile).getParent())) {
+          fs.isResourceOnly = true;
+        }
+      }
+    }
+
     for (final FileInfo fs : fileinfos.values()) {
       if (!failureList.contains(fs.src)) {
         final URI src = filteredCopyTo.get(fs.src);
@@ -907,16 +914,6 @@ public final class GenMapAndTopicListModule extends SourceReaderModule {
       throw new RuntimeException("Unable to set input file to job configuration");
     }
     job.add(new FileInfo.Builder(root).isInput(true).build());
-
-    if (job.getGeneratecopyouter() == Job.Generate.NOT_GENERATEOUTTER) {
-      Path rootFolder = Paths.get(root.result).getParent();
-      for (final FileInfo fs : fileinfos.values()) {
-        if (!Paths.get(fs.result).startsWith(rootFolder)) {
-          final FileInfo corr = new FileInfo.Builder(fs).isResourceOnly(true).build();
-          job.add(corr);
-        }
-      }
-    }
 
     try {
       logger.debug("Serializing job specification");
