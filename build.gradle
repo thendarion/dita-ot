@@ -151,7 +151,7 @@ tasks.register('integrationTest', Test) {
     description = "Run integration tests."
     dependsOn buildLocal
     minHeapSize = "128m"
-    maxHeapSize = "4g"
+    maxHeapSize = "1024m"
     systemProperties = integrationTestSystemProperties
     useJUnitPlatform {
         filter {
