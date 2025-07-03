@@ -38,11 +38,8 @@ jobs:
       - name: Stop Gradle Daemon
         if: always()
         run: ./gradlew --stop
-      - name: Test Report
-        uses: phoenix-actions/test-reporting@v8
-        id: test-report  
-        if: ${{ !cancelled() }}
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: (!cancelled())
         with:
-          name: JEST Tests            # Name of the check run which will be created
-          path: build/test-results/**/*.xml
-          reporter: jest-junit        # Format of test results
+          files: build/test-results/**/*.xml
