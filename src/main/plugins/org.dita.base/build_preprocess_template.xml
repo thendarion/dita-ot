@@ -485,7 +485,7 @@ See the accompanying LICENSE file for applicable license.
       <equals arg1="${generate.copy.outer}" arg2="1"/>      
     </condition>
     <copy todir="${copy-image.todir}" failonerror="false" overwrite="true">
-      <ditafileset format="image" />
+      <ditafileset format="image" processingRole="normal" />
       <jobmapper/>
     </copy>
   </target>
