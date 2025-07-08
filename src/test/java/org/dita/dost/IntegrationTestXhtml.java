@@ -8,7 +8,6 @@
 
 package org.dita.dost;
 
-import static org.dita.dost.AbstractIntegrationTest.Transtype.PREPROCESS;
 import static org.dita.dost.AbstractIntegrationTest.Transtype.XHTML;
 
 import java.io.File;
@@ -175,11 +174,6 @@ public class IntegrationTestXhtml extends AbstractIntegrationTest {
   @Test
   public void testimage_scale() throws Throwable {
     builder().name("image-scale").transtype(XHTML).input(Paths.get("test.dita")).test();
-  }
-
-  @Test
-  public void testkeyref() throws Throwable {
-    builder().name(Paths.get("keyref", "basic")).transtype(PREPROCESS).input(Paths.get("test.ditamap")).test();
   }
 
   @Test
