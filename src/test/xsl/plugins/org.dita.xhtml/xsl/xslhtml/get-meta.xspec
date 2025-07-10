@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:dita-ot="http://dita-ot.sourceforge.net/ns/201007/dita-ot"
+               stylesheet="get-meta.xsl"
+               exclude-result-prefixes="x xs dita-ot">
+
+  <x:scenario label="GIVEN an author">
+    <x:context mode="gen-metadata">
+      <root class="- topic/author "/>
+    </x:context>
+      <x:expect label="THEN add DC.creator" test="*">
+        <meta name="DC.creator" content=""/>
+      </x:expect>
+    <x:scenario label="WHEN it is text">
+      <x:context mode="gen-metadata">
+        <root class="- topic/author ">author</root>
+      </x:context>
+      <x:expect label="THEN add it to content" test="*">
+        <meta name="DC.creator" content="author"/>
+      </x:expect>
+    </x:scenario>
+    <x:scenario label="WHEN it is text with white-space">
+      <x:context mode="gen-metadata">
+        <root class="- topic/author ">
+          author
+        </root>
+      </x:context>
+      <x:expect label="THEN add it to content" test="*">
+        <meta name="DC.creator" content="author"/>
+      </x:expect>
+    </x:scenario>
+    <x:scenario label="WHEN it is a set of nodes w/o white space">
+      <x:context mode="gen-metadata">
+        <root class="- topic/author "><namedetails class="+ topic/data xnal-d/namedetails "><organizationnamedetails class="+ topic/ph xnal-d/organizationnamedetails "><organizationname class="+ topic/ph xnal-d/organizationname ">Batty Things R US</organizationname></organizationnamedetails><personname class="+ topic/data xnal-d/personname "><firstname class="+ topic/data xnal-d/firstname ">Fred</firstname><lastname class="+ topic/data xnal-d/lastname ">Mertz</lastname><generationidentifier class="+ topic/data xnal-d/generationidentifier ">Jr</generationidentifier></personname></namedetails></root>
+      </x:context>
+      <x:expect label="THEN add it to content one by one" test="*">
+        <meta name="DC.creator" content="Batty Things R US Fred Mertz Jr"/>
+      </x:expect>
+    </x:scenario>
+  </x:scenario>
+  
+  <x:scenario label="GIVEN a title">
+    <x:context mode="gen-metadata">
+      <root class="- topic/title "/>
+    </x:context>
+      <x:expect label="THEN add DC.title" test="*">
+        <meta name="DC.title" content=""/>
+      </x:expect>
+    <x:scenario label="WHEN it is text">
+      <x:context mode="gen-metadata">
+        <root class="- topic/title ">title</root>
+      </x:context>
+      <x:expect label="THEN add it to content" test="*">
+        <meta name="DC.title" content="title"/>
+      </x:expect>
+    </x:scenario>
+    <x:scenario label="WHEN it is text with white-space">
+      <x:context mode="gen-metadata">
+        <root class="- topic/title ">
+          title
+        </root>
+      </x:context>
+      <x:expect label="THEN add it to content" test="*">
+        <meta name="DC.title" content="title"/>
+      </x:expect>
+    </x:scenario>
+    <x:scenario label="WHEN it is a set of nodes w/o white space">
+      <x:context mode="gen-metadata">
+        <booktitle class="- topic/title bookmap/booktitle "><booklibrary class="- topic/ph bookmap/booklibrary ">Batty Things</booklibrary><mainbooktitle class="- topic/ph bookmap/mainbooktitle ">Caring for your fruit bat</mainbooktitle><booktitlealt class="- topic/ph bookmap/booktitlealt ">How to properly love and care for your bat.</booktitlealt></booktitle>
+      </x:context>
+      <x:expect label="THEN add it to content one by one" test="*">
+        <meta name="DC.title" content="Batty Things Caring for your fruit bat How to properly love and care for your bat."/>
+      </x:expect>
+    </x:scenario>
+  </x:scenario>
+
+</x:description>

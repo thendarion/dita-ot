@@ -169,7 +169,10 @@ See the accompanying LICENSE file for applicable license.
 <!-- CONTENT: Title - title -->
 <xsl:template match="*[contains(@class,' topic/title ')]" mode="gen-metadata">
   <xsl:variable name="titlemeta">
-    <xsl:apply-templates select="*|text()" mode="text-only"/>
+    <xsl:for-each select="*|text()">
+      <xsl:apply-templates select="." mode="text-only"/>
+      <xsl:text> </xsl:text>
+    </xsl:for-each>
   </xsl:variable>
   <meta name="DC.title">
     <xsl:attribute name="content" select="normalize-space($titlemeta)"/>
@@ -283,7 +286,7 @@ See the accompanying LICENSE file for applicable license.
       <meta name="DC.contributor" content="{normalize-space(.)}"/>
     </xsl:when>
     <xsl:otherwise>
-      <meta name="DC.creator" content="{normalize-space(.)}"/>
+      <meta name="DC.creator" content="{normalize-space(string-join(.//text(),' '))}"/>
     </xsl:otherwise>
   </xsl:choose>
   <xsl:value-of select="$newline"/>
