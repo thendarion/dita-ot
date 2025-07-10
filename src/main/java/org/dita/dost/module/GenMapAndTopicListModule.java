@@ -879,10 +879,6 @@ public final class GenMapAndTopicListModule extends SourceReaderModule {
       getOrCreateFileInfo(fileinfos, resource).isInputResource = true;
     }
 
-    addFlagImagesSetToProperties(job, relFlagImagesSet);
-
-    final Map<URI, URI> filteredCopyTo = filterConflictingCopyTo(copyTo, fileinfos.values());
-
     if (job.getGeneratecopyouter() == Job.Generate.NOT_GENERATEOUTTER) {
       for (final FileInfo fs : fileinfos.values()) {
         if (!Paths.get(fs.src).startsWith(Paths.get(rootFile).getParent())) {
@@ -890,6 +886,10 @@ public final class GenMapAndTopicListModule extends SourceReaderModule {
         }
       }
     }
+
+    addFlagImagesSetToProperties(job, relFlagImagesSet);
+
+    final Map<URI, URI> filteredCopyTo = filterConflictingCopyTo(copyTo, fileinfos.values());
 
     for (final FileInfo fs : fileinfos.values()) {
       if (!failureList.contains(fs.src)) {

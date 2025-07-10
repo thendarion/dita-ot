@@ -16,6 +16,7 @@ import static org.dita.dost.util.URLUtils.*;
 import static org.dita.dost.util.XMLUtils.nonDitaContext;
 
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Predicate;
 import org.dita.dost.exception.DITAOTException;
@@ -412,20 +413,10 @@ public final class GenListModuleReader extends AbstractXMLFilter {
     handleSubjectScheme(atts);
 
     final DitaClass cls = DitaClass.getInstance(atts);
-    if (
-      forceType != null && cls != null && (MAP_MAP.matches(cls) || TOPIC_TOPIC.matches(cls)) && !forceType.matches(cls)
-    ) {
-      isValidInput = true;
-      throw new EarlyExitException();
-    }
+    checkForInvalidInput(cls);
 
     final URI href = toURI(atts.getValue(ATTRIBUTE_NAME_HREF));
-    var scope = attributeStack.peek(ATTRIBUTE_NAME_SCOPE);
-    if (scope == null && href != null && href.isAbsolute()) {
-      switch (href.getScheme()) {
-        case "http", "https", "ftp", "ftps", "sftp", "mailto" -> scope = ATTR_SCOPE_VALUE_EXTERNAL;
-      }
-    }
+    var scope = getScope(href);
     if (
       href != null &&
       href.getPath() != null &&
@@ -434,14 +425,9 @@ public final class GenListModuleReader extends AbstractXMLFilter {
       !ATTR_SCOPE_VALUE_PEER.equals(scope)
     ) {
       var format = attributeStack.peek(ATTRIBUTE_NAME_FORMAT);
-      if (isFormatDita(format) && !isDitaMap() && !job.crawlTopics()) {
-        // Topic link within a topic, ignore if only crawling map
-      } else if (!(MAP_TOPICREF.matches(cls))) {
-        nonTopicrefReferenceSet.add(stripFragment(currentDir.resolve(href)));
-      } else if (isResourceOnly(attributeStack.peek(ATTRIBUTE_NAME_PROCESSING_ROLE))) {
-        resourceOnlySet.add(stripFragment(currentDir.resolve(href)));
-      } else {
-        normalProcessingRoleSet.add(stripFragment(currentDir.resolve(href)));
+      boolean isTopicCrawlingNecessary = !isFormatDita(format) || isDitaMap() || job.crawlTopics();
+      if (isTopicCrawlingNecessary) {
+        sortTopicIntoReferenceSet(cls, href);
       }
     }
 
@@ -486,6 +472,41 @@ public final class GenListModuleReader extends AbstractXMLFilter {
     }
 
     getContentHandler().startElement(uri, localName, qName, atts);
+  }
+
+  private void sortTopicIntoReferenceSet(DitaClass ditaClass, URI href) {
+    if (!(MAP_TOPICREF.matches(ditaClass))) {
+      nonTopicrefReferenceSet.add(stripFragment(currentDir.resolve(href)));
+    } else if (
+      isResourceOnly(attributeStack.peek(ATTRIBUTE_NAME_PROCESSING_ROLE)) ||
+      (
+        job.getGeneratecopyouter() == Job.Generate.NOT_GENERATEOUTTER &&
+        !Paths.get(stripFragment(currentDir.resolve(href))).startsWith(Paths.get(rootDir))
+      )
+    ) {
+      resourceOnlySet.add(stripFragment(currentDir.resolve(href)));
+    } else {
+      normalProcessingRoleSet.add(stripFragment(currentDir.resolve(href)));
+    }
+  }
+
+  private String getScope(URI href) {
+    var scope = attributeStack.peek(ATTRIBUTE_NAME_SCOPE);
+    if (scope == null && href != null && href.isAbsolute()) {
+      switch (href.getScheme()) {
+        case "http", "https", "ftp", "ftps", "sftp", "mailto" -> scope = ATTR_SCOPE_VALUE_EXTERNAL;
+      }
+    }
+    return scope;
+  }
+
+  private void checkForInvalidInput(DitaClass cls) {
+    if (
+      forceType != null && cls != null && (MAP_MAP.matches(cls) || TOPIC_TOPIC.matches(cls)) && !forceType.matches(cls)
+    ) {
+      isValidInput = true;
+      throw new EarlyExitException();
+    }
   }
 
   private void parseCoderef(final Attributes atts, final String attrScope) {
