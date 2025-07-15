@@ -30,7 +30,7 @@ class MaprefModuleTest extends AbstractModuleTest {
   @Override
   protected AbstractPipelineInput getAbstractPipelineInput() {
     final AbstractPipelineInput input = new PipelineHashIO();
-    input.setAttribute(ANT_INVOKER_EXT_PARAM_TRANSTYPE, "html5");
+    input.setAttribute(ANT_INVOKER_EXT_PARAM_TRANSTYPE, "taskLabel");
     input.setAttribute(
       ANT_INVOKER_EXT_PARAM_STYLE,
       new File("src/main/plugins/org.dita.base/xsl/preprocess/mapref.xsl").getAbsolutePath()

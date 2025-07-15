@@ -60,7 +60,7 @@ public class MoveMetaModuleTest extends AbstractModuleTest {
   @Override
   protected AbstractPipelineInput getAbstractPipelineInput() {
     final AbstractPipelineInput input = new PipelineHashIO();
-    input.setAttribute(ANT_INVOKER_EXT_PARAM_TRANSTYPE, "html5");
+    input.setAttribute(ANT_INVOKER_EXT_PARAM_TRANSTYPE, "taskLabel");
     input.setAttribute(
       ANT_INVOKER_EXT_PARAM_STYLE,
       Paths.get("src", "main", "plugins", "org.dita.base", "xsl", "preprocess", "mappull.xsl").toString()

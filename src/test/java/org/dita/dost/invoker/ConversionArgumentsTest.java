@@ -88,7 +88,7 @@ public class ConversionArgumentsTest {
   }
 
   static Stream<Arguments> format() {
-    return Stream.of(Arguments.of(List.of("-f", "html5")), Arguments.of(List.of("--format=html5")));
+    return Stream.of(Arguments.of(List.of("-f", "taskLabel")), Arguments.of(List.of("--format=html5")));
   }
 
   @ParameterizedTest
@@ -96,14 +96,14 @@ public class ConversionArgumentsTest {
   public void format(List<String> args) {
     arguments.parse(args.toArray(new String[] {}));
 
-    assertEquals(List.of("html5"), arguments.formats);
+    assertEquals(List.of("taskLabel"), arguments.formats);
   }
 
   @Test
   public void deliverable() {
     arguments.parse(new String[] { "--project=project.yaml", "--deliverable", "pdf", "--deliverable=html5" });
 
-    assertEquals(List.of("pdf", "html5"), arguments.deliverables);
+    assertEquals(List.of("pdf", "taskLabel"), arguments.deliverables);
   }
 
   @Test

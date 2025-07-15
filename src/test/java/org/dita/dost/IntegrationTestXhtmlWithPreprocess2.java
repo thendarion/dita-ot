@@ -14,22 +14,21 @@ import java.nio.file.Paths;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class IntegrationTestPreprocess2 extends IntegrationTest {
+public class IntegrationTestXhtmlWithPreprocess2
+  extends AbstractIntegrationTest
+  implements ITMisc, ITBookmap, ITConref, ITCopyTo, ITFilter, ITKeyref, ITValidate {
 
-  public IntegrationTestPreprocess2 builder() {
-    return new IntegrationTestPreprocess2();
+  public AbstractIntegrationTest builder() {
+    return new IntegrationTestXhtmlWithPreprocess2();
   }
 
   @Override
   Transtype getTranstype(Transtype transtype) {
-    switch (transtype) {
-      case PREPROCESS:
-        return PREPROCESS2;
-      case XHTML:
-        return XHTML_WITH_PREPROCESS2;
-      default:
-        return transtype;
-    }
+    return switch (transtype) {
+      case PREPROCESS -> PREPROCESS2;
+      case XHTML -> XHTML_WITH_PREPROCESS2;
+      default -> transtype;
+    };
   }
 
   @Disabled

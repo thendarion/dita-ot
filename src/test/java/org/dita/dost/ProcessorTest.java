@@ -30,7 +30,7 @@ public class ProcessorTest {
     }
     final ProcessorFactory pf = ProcessorFactory.newInstance(new File(ditaDir));
     pf.setBaseTempDir(tempDir);
-    p = pf.newProcessor("html5");
+    p = pf.newProcessor("taskLabel");
   }
 
   @Test

@@ -62,7 +62,7 @@ public class MainProjectTest {
       "args.input",
       baseDir.resolve("site.ditamap").toString(),
       "transtype",
-      "html5",
+      "taskLabel",
       "args.empty",
       "",
       "args.rellinks",
@@ -95,7 +95,7 @@ public class MainProjectTest {
       "args.input",
       baseDir.resolve("site.ditamap").toString(),
       "transtype",
-      "html5",
+      "taskLabel",
       "args.filter",
       Stream
         .of("site-html5.ditaval", "site.ditaval")

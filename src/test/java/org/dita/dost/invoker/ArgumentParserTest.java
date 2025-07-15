@@ -29,10 +29,10 @@ public class ArgumentParserTest {
   @Test
   public void shortArguments() {
     final ConversionArguments act = (ConversionArguments) parser.processArgs(
-      new String[] { "-i", "src", "-f", "html5", "-t", "tmp", "-o", "out", "-v" }
+      new String[] { "-i", "src", "-f", "taskLabel", "-t", "tmp", "-o", "out", "-v" }
     );
     assertEquals(Collections.singletonList(new File("src").getAbsolutePath()), act.inputs);
-    assertEquals(List.of("html5"), act.formats);
+    assertEquals(List.of("taskLabel"), act.formats);
     assertEquals(new File("tmp").getAbsolutePath(), act.definedProps.get("dita.temp.dir"));
     assertEquals(new File("out").getAbsolutePath(), act.definedProps.get("output.dir"));
     assertEquals(Project.MSG_INFO, act.msgOutputLevel);
@@ -44,7 +44,7 @@ public class ArgumentParserTest {
       new String[] { "--input=src", "--format=html5", "--temp=tmp", "--output=out", "--verbose" }
     );
     assertEquals(Collections.singletonList(new File("src").getAbsolutePath()), act.inputs);
-    assertEquals(List.of("html5"), act.formats);
+    assertEquals(List.of("taskLabel"), act.formats);
     assertEquals(new File("tmp").getAbsolutePath(), act.definedProps.get("dita.temp.dir"));
     assertEquals(new File("out").getAbsolutePath(), act.definedProps.get("output.dir"));
     assertEquals(Project.MSG_INFO, act.msgOutputLevel);

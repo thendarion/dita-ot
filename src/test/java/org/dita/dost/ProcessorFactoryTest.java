@@ -24,7 +24,7 @@ public class ProcessorFactoryTest {
       ditaDir = new File("src" + File.separator + "main").getAbsolutePath();
     }
     final ProcessorFactory pf = ProcessorFactory.newInstance(new File(ditaDir));
-    assertNotNull(pf.newProcessor("html5"));
+    assertNotNull(pf.newProcessor("taskLabel"));
   }
 
   @Test

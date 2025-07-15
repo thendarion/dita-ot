@@ -48,7 +48,7 @@ public abstract class AbstractIntegrationTest {
   enum Transtype {
     PREPROCESS("xhtml", true, "preprocess", "build-init", "preprocess"),
     XHTML("xhtml", false, "xhtml", "dita2xhtml"),
-    HTML5("html5", false, "html5", "dita2html5"),
+    HTML5("taskLabel", false, "taskLabel", "dita2html5"),
     PDF("pdf", true, Set.of("fo"), "pdf", "dita2pdf2"),
     ECLIPSEHELP("eclipsehelp", false, "eclipsehelp", "dita2eclipsehelp"),
     HTMLHELP("htmlhelp", false, "htmlhelp", "dita2htmlhelp"),
@@ -161,7 +161,7 @@ public abstract class AbstractIntegrationTest {
   private static final String SRC_DIR = "src";
   private static final String EXP_DIR = "exp";
   private static final Collection<String> canCompare = Arrays.asList(
-    "html5",
+    "taskLabel",
     "xhtml",
     "eclipsehelp",
     "htmlhelp",
