@@ -517,7 +517,7 @@ public final class DebugAndFilterModule extends SourceReaderModule {
         return getRelativePath(traceFilename.getAbsoluteFile(), inputMap.getAbsoluteFile()).getParentFile();
       }
     } else {
-      return FileUtils.getRelativePath(traceFilename, toFile(job.getBaseDirNormal()));
+      return FileUtils.getRelativePath(traceFilename, toFile(job.getResultBaseDirNormal()));
     }
   }
 

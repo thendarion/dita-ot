@@ -136,10 +136,10 @@ public final class JobTest {
   }
 
   @Nested
-  class GetBaseDir {
+  class GetResultBaseDir {
 
     @Test
-    public void getBaseDirAll() {
+    public void getResultBaseDirAll() {
       job.setInputDir(URI.create("file:/foo/bar/"));
       job.add(
         new Job.FileInfo.Builder()
@@ -168,11 +168,11 @@ public final class JobTest {
           .build()
       );
 
-      assertEquals(create("file:/foo/bar/"), job.getBaseDir());
+      assertEquals(create("file:/foo/bar/"), job.getResultBaseDir());
     }
 
     @Test
-    public void getBaseDirUplevels() {
+    public void getResultBaseDirUplevels() {
       job.setInputDir(URI.create("file:/foo/bar/"));
       job.add(
         new Job.FileInfo.Builder()
@@ -201,11 +201,11 @@ public final class JobTest {
           .build()
       );
 
-      assertEquals(create("file:/foo/bar/"), job.getBaseDir());
+      assertEquals(create("file:/foo/bar/"), job.getResultBaseDir());
     }
 
     @Test
-    public void getBaseDirNormalFirstTime() {
+    public void getResultBaseDirNormalFirstTime() {
       job.setInputDir(URI.create("file:/foo/bar/"));
       job.add(
         new Job.FileInfo.Builder()
@@ -242,18 +242,18 @@ public final class JobTest {
       );
 
       URI exp = create("file:/foo/bar/");
-      assertEquals(exp, job.getBaseDirNormal());
+      assertEquals(exp, job.getResultBaseDirNormal());
       assertEquals(exp, create(job.getProperty(Job.FILE_SET_BASE_DIR_NORMAL)));
     }
 
     @Test
-    public void getBaseDirNormalSecondTime() {
+    public void getResultBaseDirNormalSecondTime() {
       job.setProperty(Job.FILE_SET_BASE_DIR_NORMAL, "someBaseDir");
-      assertEquals(create("someBaseDir"), job.getBaseDirNormal());
+      assertEquals(create("someBaseDir"), job.getResultBaseDirNormal());
     }
 
     @Test
-    public void getBaseDirExternal() {
+    public void getResultBaseDirExternal() {
       job.setInputDir(URI.create("file:/foo/bar/"));
       job.add(
         new Job.FileInfo.Builder()
@@ -269,11 +269,11 @@ public final class JobTest {
           .build()
       );
 
-      assertEquals(create("file:/foo/bar/"), job.getBaseDir());
+      assertEquals(create("file:/foo/bar/"), job.getResultBaseDir());
     }
 
     @Test
-    public void getBaseDirSubDir() {
+    public void getResultBaseDirSubDir() {
       job.setInputDir(URI.create("file:/foo/bar/maps/"));
       job.add(
         new Job.FileInfo.Builder()
@@ -289,11 +289,11 @@ public final class JobTest {
           .build()
       );
 
-      assertEquals(create("file:/foo/bar/"), job.getBaseDir());
+      assertEquals(create("file:/foo/bar/"), job.getResultBaseDir());
     }
 
     @Test
-    public void getBaseDirSupDir() {
+    public void getResultBaseDirSupDir() {
       job.setInputDir(URI.create("file:/foo/bar/maps/"));
       job.add(
         new Job.FileInfo.Builder()
@@ -306,11 +306,11 @@ public final class JobTest {
         new Job.FileInfo.Builder().uri(create("topics/topic.dita")).result(create("file:/foo/bar/topic.dita")).build()
       );
 
-      assertEquals(create("file:/foo/bar/"), job.getBaseDir());
+      assertEquals(create("file:/foo/bar/"), job.getResultBaseDir());
     }
 
     @Test
-    public void getBaseDirSiblingDir() {
+    public void getResultBaseDirSiblingDir() {
       job.setInputDir(URI.create("file:/foo/bar/maps/"));
       job.add(
         new Job.FileInfo.Builder()
@@ -326,7 +326,7 @@ public final class JobTest {
           .build()
       );
 
-      assertEquals(create("file:/foo/bar/"), job.getBaseDir());
+      assertEquals(create("file:/foo/bar/"), job.getResultBaseDir());
     }
   }
 

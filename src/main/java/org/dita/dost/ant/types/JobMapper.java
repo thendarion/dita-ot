@@ -100,7 +100,7 @@ public class JobMapper implements FileNameMapper {
   private Path getBase() {
     return (job.getGeneratecopyouter() == Job.Generate.NOT_GENERATEOUTTER)
       ? Paths.get(job.getInputDir().resolve(job.getInputMap())).getParent()
-      : Paths.get(job.getBaseDirNormal());
+      : Paths.get(job.getResultBaseDirNormal());
   }
 
   public static class TypeAttribute extends EnumeratedAttribute {

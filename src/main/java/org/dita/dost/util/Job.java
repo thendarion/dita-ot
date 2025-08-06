@@ -1167,14 +1167,14 @@ public final class Job {
   /**
    * Get common base directory for all files
    */
-  public URI getBaseDir() {
+  public URI getResultBaseDir() {
     return getFilteredBaseDir();
   }
 
   /**
    * Get common base directory for processing-role="normal" files
    */
-  public URI getBaseDirNormal() {
+  public URI getResultBaseDirNormal() {
     String baseDirNormal = getProperty(FILE_SET_BASE_DIR_NORMAL);
     if (baseDirNormal != null) {
       return URI.create(baseDirNormal);

@@ -11,7 +11,6 @@ package org.dita.dost.writer;
 import static org.dita.dost.util.Constants.ATTR_FORMAT_VALUE_DITAMAP;
 import static org.dita.dost.util.URLUtils.getRelativePath;
 
-import com.google.common.annotations.VisibleForTesting;
 import java.io.File;
 import java.util.Objects;
 import org.dita.dost.util.Job;
@@ -52,7 +51,7 @@ public class TopicCleanFilter extends AbstractXMLFilter {
         .map(startFile -> getRelativePath(fi.result, startFile.result).resolve(".").getPath())
         .orElse("");
     if (job.getGeneratecopyouter() == Job.Generate.OLDSOLUTION) {
-      pathToRootDir = getRelativePath(fi.result, job.getBaseDirNormal().resolve("dummy")).resolve(".").getPath();
+      pathToRootDir = getRelativePath(fi.result, job.getResultBaseDirNormal().resolve("dummy")).resolve(".").getPath();
       pathToRootDir = pathToRootDir.isEmpty() ? SINGLE_URI_STEP : pathToRootDir;
     } else {
       pathToRootDir = (pathToMapDir == null || pathToMapDir.isEmpty()) ? SINGLE_URI_STEP : pathToMapDir;
